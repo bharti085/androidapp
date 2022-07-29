@@ -367,6 +367,7 @@ public class MainActivity2 extends AppCompatActivity {
             byteBuffer.write(buffer, 0, len);
         }
         Log.d("bharti","7");
+        Log.d("bharti","7");
         // and then we can return your byte array.
         return byteBuffer.toByteArray();
     }
