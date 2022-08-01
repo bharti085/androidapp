@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("hii", String.valueOf(data));
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
+            Log.d("hii", String.valueOf(imageUri));
 //            imageView.setImageURI(imageUri);
             Intent intent = new Intent(this, MainActivity2.class);
             intent.putExtra("EXTRA_IMAGEVIEW_URL", imageUri.toString());
