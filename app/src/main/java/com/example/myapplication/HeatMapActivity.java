@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+
 public class HeatMapActivity extends AppCompatActivity {
     ImageView imageView3;
     Uri HeatmapUri;
