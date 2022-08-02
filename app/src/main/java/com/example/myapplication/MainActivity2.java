@@ -19,6 +19,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -104,7 +105,12 @@ public class MainActivity2 extends AppCompatActivity {
     String base64;
     private ProgressDialog progress;
     Uri HeatmapURI;
+    boolean flag=true;
+    private long then;
+    private int longClickDuration = 5000;
+    int Height,Width;
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +121,45 @@ public class MainActivity2 extends AppCompatActivity {
         System.out.println("1");
         System.out.println("1");
         imageView2.setImageURI(myUri);
+        ViewTreeObserver vto = imageView2.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+                imageView2.getViewTreeObserver().removeOnPreDrawListener(this);
+               Height = imageView2.getMeasuredHeight();
+               Width = imageView2.getMeasuredWidth();
+                Log.d("Width: ", String.valueOf(imageView2.getMeasuredWidth()));
+                Log.d(" Height: ", String.valueOf(imageView2.getMeasuredHeight()));
+                return true;
+            }
+        });
+//        getDropboxIMGSize(myUri);
+//
+//        int width = imageView2.getWidth();
+//        int height = imageView2.getHeight();
+//        Log.i("url", String.valueOf(width));
+//        Log.i("url", String.valueOf(height));
 
+
+
+//        Bitmap bitmap = null;
+//        try {
+//            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),myUri);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+////        System.out.println(bitmap);
+//
+//        // initialize byte stream
+//        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+//        // compress Bitmap
+//        bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+//        // Initialize byte array
+//        byte[] bytes=stream.toByteArray();
+//        // get base64 encoded string
+//        base64= Base64.encodeToString(bytes,Base64.DEFAULT);
+//        base64.replaceAll("\n", "");
+//        System.out.println(base64);
+//
         String filePath = getPath(myUri);
         Log.i("url path", String.valueOf(filePath));
 
@@ -129,19 +173,65 @@ public class MainActivity2 extends AppCompatActivity {
         progress = new ProgressDialog(MainActivity2.this);
         buttonCal.setEnabled(false);
         mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+
+
+        imageView2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mDetector.onTouchEvent(event);
+                return true;
+            }
+//        @RequiresApi(api = Build.VERSION_CODES.M)
+//        @Override
+//        public boolean onTouch(View v, MotionEvent event) {
+//
+//            then = (long) System.currentTimeMillis();
+//            if (event.getAction() == MotionEvent.ACTION_UP) {
+//        if ((System.currentTimeMillis() - then) > longClickDuration) {
+//            /* Implement long click behavior here */
+//            x = event.getX();
+//            y = event.getY();
+//            x1=(int)x;
+//            y1=(int)y;
+//            disp();
+//
+//            savetofile();
+//            checkEnabled();
+//            i++;
+//            SLNO++;
+//            Toast.makeText(MainActivity2.this, "X: " + x1 + " Y: " + y1 + "  RSSI:" + rssi, Toast.LENGTH_SHORT).show();
+//            System.out.println("1");
+//
+//            System.out.println("Long Click has happened!");
+//            return false;
+//        }
+//    }
+//    return true;
+//}
+        });
 //        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
         buttonCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                base64=fileUriToBase64(myUri, resolver);
-                Log.d("Bharti", base64);
-                addRecord();
+//                base64=fileUriToBase64(myUri, resolver);
+//                Log.d("Bharti", base64);
+                addRecord(filePath);
 //                file.delete();
 //                SLNO = 0;
 //                startActivity(new Intent(MainActivity2.this, HeatMapActivity.class));
             }
         });
     }
+//    private void getDropboxIMGSize(Uri uri){
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(new File(uri.getPath()).getAbsolutePath(), options);
+//        int imageHeight = options.outHeight;
+//        int imageWidth = options.outWidth;
+//        Log.i("url", String.valueOf(imageHeight));
+//        Log.i("url", String.valueOf(imageWidth));
+//
+//    }
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.MediaColumns.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
@@ -175,8 +265,6 @@ public class MainActivity2 extends AppCompatActivity {
 //        }
 //    }
 
-
-
     public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures";
 
@@ -185,10 +273,22 @@ public class MainActivity2 extends AppCompatActivity {
         public void onLongPress(MotionEvent event) {
             Log.d(DEBUG_TAG, "onDown: " + event.toString());
 
+//            int[] viewCoords = new int[2];
+//            imageView2.getLocationOnScreen(viewCoords);
+//            Log.d("image coordinates", String.valueOf(viewCoords[0]));
+//            Log.d("image coordinates", String.valueOf(viewCoords[1]));
+//
+//            int touchX = (int) event.getX();
+//            int touchY = (int) event.getY();
+//            Log.d("image coordinates", String.valueOf(touchX));
+//            Log.d("image coordinates", String.valueOf(touchY));
+//            x1 = touchX; // viewCoords[0] is the X coordinate
+//            y1 = touchY ;//- viewCoords[1];
+
             x = event.getX();
             y = event.getY();
             x1=(int)x;
-            y1=(int)y;
+            y1= Height - (int)y;
             disp();
 
             savetofile();
@@ -312,33 +412,38 @@ public class MainActivity2 extends AppCompatActivity {
 
         directory = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS");
         directory.mkdirs();
+        Log.v("Bharti", "make directory file");
 //        if (!directory.exists())
 //            Toast.makeText(this, (directory.mkdirs() ? "Directory has been created" : "Directory not created"), Toast.LENGTH_SHORT).show();
 
         //System.out.println(directory);
 
-        if(directory.exists())
-        {
-            try{
-                directory.delete();
-            }
-            catch (Exception e) {
-                Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        directory = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS");
-        directory.mkdirs();
+//        if(directory.exists())
+//        {
+//            try{
+//                directory.delete();
+//            }
+//            catch (Exception e) {
+//                Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//        directory = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS");
+//        directory.mkdirs();
         file = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS" + java.io.File.separator + "WSS.txt");
         System.out.println(file);
 
 
         Date currentTime = Calendar.getInstance().getTime();
+        Log.v("Bharti", "flag");
 
-
-
+        if(flag==true)
+        {   Log.v("Bharti", String.valueOf(file));
+            file.delete();
+            flag=false;
+        }
         if (!file.exists()) {
-            try {
+            try {   Log.v("Bharti", String.valueOf(file));
                 file.createNewFile();
             } catch (Exception e) {
                 Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -420,11 +525,14 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
 //    private void addTouchListener() {
-        private void addRecord() {
-//            Log.d("bharti","8");
+        private void addRecord(String filePath) {
+            Log.d("bharti","8");
 //            Log.d("bharti", String.valueOf(file));
                 File txtFile = new File(String.valueOf(file));
-//                File file = new File(filePath);
+                File fileImage = new File(filePath);
+                Log.d("image path",filePath);
+                Log.d("image path", String.valueOf(fileImage));
+
 //            Log.d("bharti", String.valueOf(files));
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), txtFile);
 //            Log.d("bharti", String.valueOf(requestBody));
@@ -433,16 +541,18 @@ public class MainActivity2 extends AppCompatActivity {
 //            Log.d("bharti", String.valueOf(avatar));
 //            Log.d("bharti","10");
 //            String base64data= "data:image/jpeg;base64,"+base64;
-//            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-//            MultipartBody.Part parts = MultipartBody.Part.createFormData("base64image", file.getName(), requestBody);
-                RequestBody base64image = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(base64));
+            RequestBody requestbody = RequestBody.create(MediaType.parse("image/*"), fileImage);
+            MultipartBody.Part parts = MultipartBody.Part.createFormData("base64image", fileImage.getName(), requestbody);
+//            base64.replaceAll("[\\n\t ]","");
+//            Log.d("bharti", base64);
+//                RequestBody base64image = RequestBody.create(MediaType.parse("text/plain"), base64);
 //            Log.d("bharti", String.valueOf(base64image));
 //            Log.d("bharti","11");
                 apiCall getResponse = apiCall.getRetrofit().create(apiCall.class);
 //            Log.d("bharti","12");
 
 //            Log.d("heloo", adi);
-                Call<ResponseBody> call = getResponse.addRecord(avatar,base64image );
+                Call<ResponseBody> call = getResponse.addRecord(avatar,parts);
 //            Log.d("bharti","13");
 
                 call.enqueue(new Callback<ResponseBody>() {
