@@ -32,12 +32,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DrawActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyOtherActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -125,41 +126,14 @@ public class MainActivity2 extends AppCompatActivity {
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
                 imageView2.getViewTreeObserver().removeOnPreDrawListener(this);
-               Height = imageView2.getMeasuredHeight();
-               Width = imageView2.getMeasuredWidth();
+                Height = imageView2.getMeasuredHeight();
+                Width = imageView2.getMeasuredWidth();
                 Log.d("Width: ", String.valueOf(imageView2.getMeasuredWidth()));
                 Log.d(" Height: ", String.valueOf(imageView2.getMeasuredHeight()));
                 return true;
             }
         });
-//        getDropboxIMGSize(myUri);
-//
-//        int width = imageView2.getWidth();
-//        int height = imageView2.getHeight();
-//        Log.i("url", String.valueOf(width));
-//        Log.i("url", String.valueOf(height));
 
-
-
-//        Bitmap bitmap = null;
-//        try {
-//            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),myUri);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-////        System.out.println(bitmap);
-//
-//        // initialize byte stream
-//        ByteArrayOutputStream stream=new ByteArrayOutputStream();
-//        // compress Bitmap
-//        bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
-//        // Initialize byte array
-//        byte[] bytes=stream.toByteArray();
-//        // get base64 encoded string
-//        base64= Base64.encodeToString(bytes,Base64.DEFAULT);
-//        base64.replaceAll("\n", "");
-//        System.out.println(base64);
-//
         String filePath = getPath(myUri);
         Log.i("url path", String.valueOf(filePath));
 
@@ -213,25 +187,13 @@ public class MainActivity2 extends AppCompatActivity {
         buttonCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                base64=fileUriToBase64(myUri, resolver);
-//                Log.d("Bharti", base64);
+
                 addRecord(filePath);
-//                file.delete();
-//                SLNO = 0;
-//                startActivity(new Intent(MainActivity2.this, HeatMapActivity.class));
+
             }
         });
     }
-//    private void getDropboxIMGSize(Uri uri){
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(new File(uri.getPath()).getAbsolutePath(), options);
-//        int imageHeight = options.outHeight;
-//        int imageWidth = options.outWidth;
-//        Log.i("url", String.valueOf(imageHeight));
-//        Log.i("url", String.valueOf(imageWidth));
-//
-//    }
+
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.MediaColumns.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
@@ -271,19 +233,6 @@ public class MainActivity2 extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onLongPress(MotionEvent event) {
-            Log.d(DEBUG_TAG, "onDown: " + event.toString());
-
-//            int[] viewCoords = new int[2];
-//            imageView2.getLocationOnScreen(viewCoords);
-//            Log.d("image coordinates", String.valueOf(viewCoords[0]));
-//            Log.d("image coordinates", String.valueOf(viewCoords[1]));
-//
-//            int touchX = (int) event.getX();
-//            int touchY = (int) event.getY();
-//            Log.d("image coordinates", String.valueOf(touchX));
-//            Log.d("image coordinates", String.valueOf(touchY));
-//            x1 = touchX; // viewCoords[0] is the X coordinate
-//            y1 = touchY ;//- viewCoords[1];
 
             x = event.getX();
             y = event.getY();
@@ -394,7 +343,7 @@ public class MainActivity2 extends AppCompatActivity {
             Log.d("\t\tOperating band=", String.valueOf(operating_band));
             Log.d("\t\tX=", String.valueOf(x1));
             Log.d("\t\tY=", String.valueOf(y1));
-            //st12.setText("result"+result);
+
 //            Toast.makeText(MainActivity2.this,  "RSSI:"+ rssi + "  SSID:" + ssid, Toast.LENGTH_LONG).show();
 
 
@@ -413,28 +362,12 @@ public class MainActivity2 extends AppCompatActivity {
         directory = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS");
         directory.mkdirs();
         Log.v("Bharti", "make directory file");
-//        if (!directory.exists())
-//            Toast.makeText(this, (directory.mkdirs() ? "Directory has been created" : "Directory not created"), Toast.LENGTH_SHORT).show();
 
-        //System.out.println(directory);
-
-//        if(directory.exists())
-//        {
-//            try{
-//                directory.delete();
-//            }
-//            catch (Exception e) {
-//                Toast.makeText(MainActivity2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//
-//        directory = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS");
-//        directory.mkdirs();
         file = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + "WSS" + java.io.File.separator + "WSS.txt");
         System.out.println(file);
 
 
-        Date currentTime = Calendar.getInstance().getTime();
+//        Date currentTime = Calendar.getInstance().getTime();
         Log.v("Bharti", "flag");
 
         if(flag==true)
@@ -477,115 +410,76 @@ public class MainActivity2 extends AppCompatActivity {
         }
     }
 
-    public static String fileUriToBase64(Uri uri, ContentResolver resolver) {
-        Log.d("bharti","1");
-        String encodedBase64 = "";
-        try {
-            Log.d("bharti","2");
-            byte[] bytes = readBytes(uri, resolver);
-            Log.d("bharti","3");
-            encodedBase64 = Base64.encodeToString(bytes, 0);
-            Log.d("bharti","4");
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return encodedBase64;
-    }
-
-    public static byte[] readBytes(Uri uri, ContentResolver resolver)
-            throws IOException {
-        // this dynamically extends to take the bytes you read
-        Log.d("uri", String.valueOf(uri));
-        InputStream inputStream = resolver.openInputStream(uri);
-        Log.d("bharti","5");
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        Log.d("bharti","6");
-
-        // this is storage overwritten on each iteration with bytes
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        // we need to know how may bytes were read to write them to the
-        // byteBuffer
-        int len = 0;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
-        }
-        Log.d("bharti","7");
-        Log.d("bharti","7");
-        // and then we can return your byte array.
-        return byteBuffer.toByteArray();
-    }
-
-
     public void checkEnabled() {
         if (i > 3) {
             buttonCal.setEnabled(true);
         }
     }
 
-//    private void addTouchListener() {
-        private void addRecord(String filePath) {
-            Log.d("bharti","8");
+    //    private void addTouchListener() {
+    private void addRecord(String filePath) {
+        Log.d("bharti","8");
 //            Log.d("bharti", String.valueOf(file));
-                File txtFile = new File(String.valueOf(file));
-                File fileImage = new File(filePath);
-                Log.d("image path",filePath);
-                Log.d("image path", String.valueOf(fileImage));
+        File txtFile = new File(String.valueOf(file));
+        File fileImage = new File(filePath);Log.d("image path",filePath);
+      Log.d("image path", String.valueOf(fileImage));
 
 //            Log.d("bharti", String.valueOf(files));
-                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), txtFile);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), txtFile);
 //            Log.d("bharti", String.valueOf(requestBody));
 //            Log.d("bharti","9");
-                MultipartBody.Part avatar = MultipartBody.Part.createFormData("txtFile", txtFile.getName(), requestBody);
+        MultipartBody.Part avatar = MultipartBody.Part.createFormData("txtFile", txtFile.getName(), requestBody);
 //            Log.d("bharti", String.valueOf(avatar));
 //            Log.d("bharti","10");
-//            String base64data= "data:image/jpeg;base64,"+base64;
-            RequestBody requestbody = RequestBody.create(MediaType.parse("image/*"), fileImage);
-            MultipartBody.Part parts = MultipartBody.Part.createFormData("base64image", fileImage.getName(), requestbody);
+
+        RequestBody requestbody = RequestBody.create(MediaType.parse("image/*"), fileImage);
+        MultipartBody.Part parts = MultipartBody.Part.createFormData("base64image", fileImage.getName(), requestbody);
 //            base64.replaceAll("[\\n\t ]","");
 //            Log.d("bharti", base64);
+//        RequestBody height = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Height));
+//        RequestBody width = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Width));
 //                RequestBody base64image = RequestBody.create(MediaType.parse("text/plain"), base64);
 //            Log.d("bharti", String.valueOf(base64image));
 //            Log.d("bharti","11");
-                apiCall getResponse = apiCall.getRetrofit().create(apiCall.class);
+        apiCall getResponse = apiCall.getRetrofit().create(apiCall.class);
 //            Log.d("bharti","12");
 
 //            Log.d("heloo", adi);
-                Call<ResponseBody> call = getResponse.addRecord(avatar,parts);
+        Call<ResponseBody> call = getResponse.addRecord(avatar,parts);
+//        Call<ResponseBody> call = getResponse.addRecord(avatar,parts,height,width);
 //            Log.d("bharti","13");
 
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 //                        Log.d("Response", "=" + response.code());
 //                        Log.d("Response", "= " + response.message());
-                        Log.d("Response", "= " + response);
-                        Log.d("Response", "= " + response.body());
-                        Log.d("Response", "= " + response.getClass());
+                Log.d("Response", "= " + response);
+                Log.d("Response", "= " + response.body());
+                Log.d("Response", "= " + response.getClass());
 //                        Log.d("Response", "= " + response.raw());
-                        if(response.code()==200)
-                        {
-                            if (response.body() != null) {
-                                // display the image data in a ImageView or save it
-                                Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                                HeatmapURI=getImageUri(incontext, bmp);
-                                Intent intent = new Intent(MainActivity2.this,HeatMapActivity.class);
-                                intent.putExtra("HEATMAP_IMAGEVIEW_BITMAP", HeatmapURI.toString());
-                                startActivity(intent);
+                if(response.code()==200)
+                {
+                    if (response.body() != null) {
+                        // display the image data in a ImageView or save it
+                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                        HeatmapURI=getImageUri(incontext, bmp);
+                        Intent intent = new Intent(MainActivity2.this,HeatMapActivity.class);
+                        intent.putExtra("HEATMAP_IMAGEVIEW_BITMAP", HeatmapURI.toString());
+                        startActivity(intent);
 ////                                imageView2.setImageBitmap(bmp);
 //                                imageView2.setImageURI(HeatmapURI);
-                        }
                     }
-                        }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d("failure", "message = " + t.getMessage());
-                        Log.d("failure", "cause = " + t.getCause());
-                    }
-                });
+                }
             }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("failure", "message = " + t.getMessage());
+                Log.d("failure", "cause = " + t.getCause());
+            }
+        });
+    }
 
     public Uri getImageUri(Context inContext, Bitmap bmp) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -593,9 +487,46 @@ public class MainActivity2 extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), bmp, "Title", null);
         return Uri.parse(path);
     }
+
+//    public static class ImageResizer {
+//
+//        /**
+//         * Resizes an image to a absolute width and height (the image may not be
+//         * proportional)
+//         * @param inputImagePath Path of the original image
+//         * @param outputImagePath Path to save the resized image
+//         * @param scaledWidth absolute width in pixels
+//         * @param scaledHeight absolute height in pixels
+//         * @throws IOException
+//         */
+//        public static void resize(String inputImagePath,
+//                                  String outputImagePath, int scaledWidth, int scaledHeight)
+//                throws IOException {
+//            // reads input image
+//            File inputFile = new File(inputImagePath);
+//
+//            BufferedImage inputImage = ImageIO.read(inputFile);
+//
+//            // creates output image
+//            BufferedImage outputImage = new BufferedImage(scaledWidth,
+//                    scaledHeight, inputImage.getType());
+//
+//            // scales the input image to the output image
+//            Graphics2D g2d = outputImage.createGraphics();
+//            g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
+//            g2d.dispose();
+//
+//            // extracts extension of output file
+//            String formatName = outputImagePath.substring(outputImagePath
+//                    .lastIndexOf(".") + 1);
+//
+//            // writes to output file
+//            ImageIO.write(outputImage, formatName, new File(outputImagePath));
+//        }
+//    }
 //        });
 //    }
-}
+//}
 
 
 //
@@ -632,8 +563,7 @@ public class MainActivity2 extends AppCompatActivity {
 //                return false;
 //            }
 //            });
-//        }
-
+       }
 
 
 

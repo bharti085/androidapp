@@ -36,28 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setTitle("Choose");
 
-
-//        builder.setMessage("This is an Example of Android AlertDialog with 3 Buttons!!");
-
-
-        //Button One : Yes
         builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                  startActivity(new Intent(MainActivity.this, MyOtherActivity.class));
-//                Toast.makeText(MainActivity.this, "Yes button Clicked!", Toast.LENGTH_LONG).show();
-//                public void onClick(View v) {
+
                   openGallery();
 //                }
             }
         });
-//            public void onClick(View v) {
-//                alertdialog();
-//            }
-//        });
 
-
-        //Button Two : No
         builder.setNegativeButton("Draw", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -70,18 +57,6 @@ public class MainActivity extends AppCompatActivity {
 //                dialog.cancel();
             }
         });
-
-
-
-        //Button Three : Neutral
-//        builder.setNeutralButton("Can't Say!", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                Toast.makeText(MainActivity.this, "Neutral button Clicked!", Toast.LENGTH_LONG).show();
-//                dialog.cancel();
-//            }
-//        });
-
 
         AlertDialog diag = builder.create();
         diag.show();

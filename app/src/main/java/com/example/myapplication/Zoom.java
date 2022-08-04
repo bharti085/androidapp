@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import com.example.myapplication.MainActivity2;
 public class Zoom<onTouch> {
     private static final String TAG = "Touch";
+
     @SuppressWarnings("unused")
     private static final float MIN_ZOOM = 1f, MAX_ZOOM = 1f;
 
