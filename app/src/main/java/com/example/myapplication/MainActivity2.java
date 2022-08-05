@@ -109,7 +109,7 @@ public class MainActivity2 extends AppCompatActivity {
     boolean flag=true;
     private long then;
     private int longClickDuration = 5000;
-    int Height,Width;
+    int height,width;
 
     @SuppressLint("WrongThread")
     @Override
@@ -126,8 +126,8 @@ public class MainActivity2 extends AppCompatActivity {
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
                 imageView2.getViewTreeObserver().removeOnPreDrawListener(this);
-                Height = imageView2.getMeasuredHeight();
-                Width = imageView2.getMeasuredWidth();
+                height = imageView2.getMeasuredHeight();
+                width = imageView2.getMeasuredWidth();
                 Log.d("Width: ", String.valueOf(imageView2.getMeasuredWidth()));
                 Log.d(" Height: ", String.valueOf(imageView2.getMeasuredHeight()));
                 return true;
@@ -237,7 +237,7 @@ public class MainActivity2 extends AppCompatActivity {
             x = event.getX();
             y = event.getY();
             x1=(int)x;
-            y1= Height - (int)y;
+            y1= height - (int)y;
             disp();
 
             savetofile();
@@ -399,6 +399,8 @@ public class MainActivity2 extends AppCompatActivity {
             if (SLNO == 0) {
                 buffered_writer.write("\nNumber of times" + "\tSSID" + "\tRSSI" + "\tX" + "\tY" + "\tFrequency" + "\tLinkSpeed" + "\tRxLinkSpeed" + "\tTxLinkSpeed" + "\toperating_band");
                 System.out.println("5");
+                buffered_writer.write("\n" + SLNO + "\t" + ssid + "\t" + rssi + "\t" + x1 + "\t" + y1 + "\t" + frequency + "\t" + Linkspeed + "\t" + RxLinkSpeed + "\t" + TxLinkSpeed + "\t" + operating_band);
+                System.out.println("6");
             } else {
                 buffered_writer.write("\n" + SLNO + "\t" + ssid + "\t" + rssi + "\t" + x1 + "\t" + y1 + "\t" + frequency + "\t" + Linkspeed + "\t" + RxLinkSpeed + "\t" + TxLinkSpeed + "\t" + operating_band);
                 System.out.println("6");
@@ -436,17 +438,14 @@ public class MainActivity2 extends AppCompatActivity {
         MultipartBody.Part parts = MultipartBody.Part.createFormData("base64image", fileImage.getName(), requestbody);
 //            base64.replaceAll("[\\n\t ]","");
 //            Log.d("bharti", base64);
-//        RequestBody height = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Height));
-//        RequestBody width = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Width));
+        RequestBody Height = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(height));
+        RequestBody Width = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(width));
 //                RequestBody base64image = RequestBody.create(MediaType.parse("text/plain"), base64);
 //            Log.d("bharti", String.valueOf(base64image));
 //            Log.d("bharti","11");
         apiCall getResponse = apiCall.getRetrofit().create(apiCall.class);
-//            Log.d("bharti","12");
-
-//            Log.d("heloo", adi);
-        Call<ResponseBody> call = getResponse.addRecord(avatar,parts);
-//        Call<ResponseBody> call = getResponse.addRecord(avatar,parts,height,width);
+//        Call<ResponseBody> call = getResponse.addRecord(avatar,parts);
+        Call<ResponseBody> call = getResponse.addRecord(avatar,parts,Height,Width);
 //            Log.d("bharti","13");
 
         call.enqueue(new Callback<ResponseBody>() {

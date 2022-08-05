@@ -20,7 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
-import com.example.myapplication.MainActivity2;
+//import com.example.myapplication.MainActivity2;
 public class Zoom<onTouch> {
     private static final String TAG = "Touch";
 
@@ -29,7 +29,8 @@ public class Zoom<onTouch> {
 
     Matrix matrix = new Matrix();
     Matrix savedMatrix = new Matrix();
-    MainActivity2 ob = new MainActivity2();
+//    MainActivity2 ob = new MainActivity2();
+
     // The 3 states (events) which the user is trying to perform
     static final int NONE = 0;
     static final int DRAG = 1;
