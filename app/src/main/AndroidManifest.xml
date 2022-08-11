@@ -28,7 +28,7 @@
             android:name=".HeatMapActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".RSSI_xy"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

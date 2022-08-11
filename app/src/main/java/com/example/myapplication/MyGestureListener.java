@@ -1,12 +1,7 @@
 package com.example.myapplication;
 
-import android.os.Build;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.widget.Toast;
-import com.example.myapplication.MainActivity2;
-import androidx.annotation.RequiresApi;
+
 public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final String DEBUG_TAG = "Gestures";
     float x;

@@ -1,4 +1,5 @@
 package com.example.myapplication;
+// allows imageview to zoom in and out
 
 import android.graphics.PointF;
 import android.util.Log;
